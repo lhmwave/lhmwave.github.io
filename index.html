@@ -129,12 +129,13 @@ p{margin:0}
 .play{margin-top:2.5rem;background:var(--surface);border-radius:var(--radius);padding:1.6rem 1.5rem}
 .play .q{font-family:var(--font-display);font-size:1.2rem;font-weight:700}
 .answer{margin-top:1.75rem;display:grid;gap:1rem;max-width:40rem}
-details.labnote{margin-top:2rem;border-top:1px solid var(--rule);padding-top:1rem;max-width:40rem}
-details.labnote summary{cursor:pointer;font-family:var(--font-data);font-size:.8rem;color:var(--muted);list-style:none}
+details.labnote{margin-top:2.75rem;max-width:44rem;background:var(--surface);border-radius:var(--radius);padding:.85rem 1.2rem}
+details.labnote summary{cursor:pointer;font-size:.86rem;font-weight:600;color:var(--muted);list-style:none}
+details.labnote summary:hover{color:var(--indigo)}
 details.labnote summary::-webkit-details-marker{display:none}
 details.labnote summary::before{content:"+ ";color:var(--indigo)}
 details.labnote[open] summary::before{content:"− "}
-details.labnote .in{margin-top:.8rem;font-size:.9rem;display:grid;gap:.55rem}
+details.labnote .in{margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--rule);font-size:.9rem;display:grid;gap:.6rem}
 details.labnote .src{font-size:.82rem;color:var(--muted)}
 
 /* ch1 examples */
@@ -172,7 +173,10 @@ input[type=range]{width:100%;accent-color:var(--indigo)}
 .dots-wrap h3{font-size:1rem;margin-bottom:.6rem;display:flex;justify-content:space-between;gap:.5rem}
 .dots-wrap h3 .mono{font-weight:400}
 .dots{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:15rem}
-.dots i{aspect-ratio:1;border-radius:50%;border:1px solid var(--rule);background:transparent;transition:background .35s}
+.dots i{aspect-ratio:1;border-radius:50%;border:1px solid var(--rule);background:transparent;transition:background .3s,transform .3s}
+.dots i.mine{border:1.5px dashed var(--shu)}
+.dots i.on{transform:scale(1.04)}
+.dots.kr i.mine,.dots.jp i.mine{border:2px dashed var(--shu)}
 .dots.kr i.on{background:var(--kr);border-color:var(--kr)}
 .dots.jp i.on{background:var(--jp);border-color:var(--jp)}
 .verdict{font-family:var(--font-display);font-size:1.15rem}
@@ -186,14 +190,18 @@ input[type=range]{width:100%;accent-color:var(--indigo)}
 .stack{display:grid;gap:1.1rem;margin-top:1.4rem}
 .stack .lab{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.35rem}
 .sbar{display:flex;height:2.4rem;width:100%;overflow:hidden;border-radius:6px}
-.sbar button{border:0;padding:0;height:100%;position:relative;min-width:0;font-family:var(--font-data);font-size:.72rem;color:var(--paper);overflow:hidden;white-space:nowrap}
-.sbar button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:-2px}
+.sbar button{border:0;padding:0;height:100%;position:relative;min-width:0;font-size:.74rem;font-weight:600;color:#fff;overflow:hidden;white-space:nowrap;transition:opacity .25s ease,filter .2s ease}
+.sbar button:hover{filter:brightness(1.15)}
+.sbar button[aria-pressed="false"]{opacity:.38}
+.sbar button[aria-pressed="true"]{opacity:1}
 .cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.1rem}
 .cats button{background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:.3rem .85rem;font-size:.82rem}
 .cats button[aria-pressed="true"]{border-color:var(--ink);background:var(--paper)}
 .cats button i{display:inline-block;width:.7rem;height:.7rem;margin-right:.35rem;vertical-align:-1px}
 .catinfo{margin-top:1.1rem;padding:1rem 1.1rem;background:var(--paper);border-radius:8px;display:grid;gap:.4rem}
 .catinfo h3{font-size:1.1rem}
+.catinfo{transition:background .2s}
+.catinfo.preview{background:var(--indigo-soft)}
 .catinfo .nums{font-family:var(--font-data);font-size:.85rem}
 
 /* ch4 leads */
@@ -395,6 +403,7 @@ footer .wide{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem
         <div class="slider"><input type="range" id="g-jp" min="0" max="100" value="50"><output for="g-jp" id="o-jp">50</output></div>
         <div><button class="btn" type="button" id="g-go">정답 보기</button></div>
       </div>
+      <p class="gloss" id="g-legend" hidden style="margin-top:1.2rem">채운 점은 실제 비율, 붉은 점선 테두리는 내 예상이다.</p>
       <div class="dots-wrap" id="g-res" hidden>
         <div><h3><span>한국</span><span class="mono" id="r-kr"></span></h3><div class="dots kr" id="d-kr"></div></div>
         <div><h3><span>일본</span><span class="mono" id="r-jp"></span></h3><div class="dots jp" id="d-jp"></div></div>
@@ -606,14 +615,14 @@ footer .wide{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem
   /* ch2 guess */
   function bindOut(i,o){var a=document.getElementById(i),b=document.getElementById(o);a.addEventListener('input',function(){b.textContent=a.value;});}
   bindOut('g-kr','o-kr');bindOut('g-jp','o-jp');
-  function dots(el,n){el.innerHTML='';for(var k=0;k<100;k++){var d=document.createElement('i');el.appendChild(d);}
-    var items=el.children;setTimeout(function(){for(var k=0;k<n;k++)items[k].classList.add('on');},30);}
+  function dots(el,n,g){el.innerHTML='';for(var k=0;k<100;k++){var d=document.createElement('i');if(k<g)d.className='mine';el.appendChild(d);}
+    var items=el.children;for(var k=0;k<n;k++)(function(k){setTimeout(function(){items[k].classList.add('on');},8*k);})(k);}
   document.getElementById('g-go').addEventListener('click',function(){
     var gk=+document.getElementById('g-kr').value, gj=+document.getElementById('g-jp').value;
-    document.getElementById('g-res').hidden=false;
+    document.getElementById('g-res').hidden=false;document.getElementById('g-legend').hidden=false;
     document.getElementById('r-kr').textContent='87.22% · 예상 '+gk;
     document.getElementById('r-jp').textContent='11.90% · 예상 '+gj;
-    dots(document.getElementById('d-kr'),87);dots(document.getElementById('d-jp'),12);
+    dots(document.getElementById('d-kr'),87,gk);dots(document.getElementById('d-jp'),12,gj);
     var err=Math.abs(gk-87)+Math.abs(gj-12);
     document.getElementById('g-verdict').textContent= err<=20?'거의 맞혔습니다. 한국 87개, 일본 12개입니다.':'한국은 100개 중 87개, 일본은 12개입니다. 차이가 일곱 배를 넘습니다.';
   });
@@ -626,24 +635,31 @@ footer .wide{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem
     {id:'intr',n:'의문형',ex:'~ㄴ가, ~나 / ~か, ~のか',d:'되묻는 형식으로 독자의 비판적 판단을 끌어낸다. 한국이 일본의 두 배다.',jp:7.7,kr:15.4,c:'#A2563F'},
     {id:'dirc',n:'지향형',ex:'방향만 제시',d:'가야 할 방향이나 도달점을 제시하되, 누가 무엇을 하라고 특정하지 않는다. 한국에서는 거의 쓰이지 않는다.',jp:8.0,kr:0.6,c:'#6F6A8E'}
   ];
-  var sel='deon';
-  function drawBar(el,key){
-    el.innerHTML='';
+  var sel='deon', catsEl=document.getElementById('cats'), info=document.getElementById('catinfo');
+  function find(id){return cats.filter(function(x){return x.id===id;})[0];}
+  function showInfo(c,preview){
+    info.innerHTML='<h3>'+c.n+' <span class="gloss" style="font-family:var(--font-body);font-weight:400">'+c.ex+'</span></h3><p>'+c.d+'</p><p class="nums">일본 '+c.jp.toFixed(1)+'% · 한국 '+c.kr.toFixed(1)+'%</p>';
+    info.classList.toggle('preview',!!preview);
+  }
+  [['sb-jp','jp','일본'],['sb-kr','kr','한국']].forEach(function(row){
+    var el=document.getElementById(row[0]);
     cats.forEach(function(c){
-      var b=document.createElement('button');b.type='button';b.style.width=c[key]+'%';b.style.background=c.c;
-      b.setAttribute('aria-label',c.n+' '+c[key]+'%');b.setAttribute('aria-pressed',c.id===sel?'true':'false');
-      b.textContent=c[key]>=6?c[key]+'%':'';
+      var b=document.createElement('button');b.type='button';b.dataset.id=c.id;
+      b.style.width=c[row[1]]+'%';b.style.background=c.c;
+      b.title=row[2]+' · '+c.n+' '+c[row[1]]+'%';
+      b.setAttribute('aria-label',row[2]+' '+c.n+' '+c[row[1]]+'%');
+      b.textContent=c[row[1]]>=6?c[row[1]]+'%':'';
       b.addEventListener('click',function(){pick(c.id);});
+      b.addEventListener('mouseenter',function(){showInfo(c,true);});
+      b.addEventListener('mouseleave',function(){showInfo(find(sel),false);});
       el.appendChild(b);
     });
-  }
-  var catsEl=document.getElementById('cats');
+  });
   cats.forEach(function(c){var b=document.createElement('button');b.type='button';b.dataset.id=c.id;b.innerHTML='<i style="background:'+c.c+'"></i>'+c.n;b.addEventListener('click',function(){pick(c.id);});catsEl.appendChild(b);});
   function pick(id){
-    sel=id;var c=cats.filter(function(x){return x.id===id;})[0];
-    drawBar(document.getElementById('sb-jp'),'jp');drawBar(document.getElementById('sb-kr'),'kr');
-    catsEl.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false');});
-    document.getElementById('catinfo').innerHTML='<h3>'+c.n+' <span class="gloss" style="font-family:var(--font-body);font-weight:400">'+c.ex+'</span></h3><p>'+c.d+'</p><p class="nums">일본 '+c.jp.toFixed(1)+'% · 한국 '+c.kr.toFixed(1)+'%</p>';
+    sel=id;
+    document.querySelectorAll('.sbar button, #cats button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false');});
+    showInfo(find(id),false);
   }
   pick('deon');
 
