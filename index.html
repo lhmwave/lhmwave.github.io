@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="한국과 일본의 신문 사설 제목은 어떻게 다른가. 이해미의 한일 사설 대조 연구를 직접 체험하는 사이트.">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>제목의 문법</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Shippori+Mincho:wght@500;700&display=swap">
+<style>
+/* Layout: 한 칼럼(본문 40rem, 체험 영역 64rem)으로 내려가는 여섯 장(章). 각 장 = 질문 → 직접 해보기 → 답 → 연구 노트. 강조색 朱은 '공백' 하나에만. */
+:root{
+  --paper:#F3F4F1;
+  --surface:#FFFFFF;
+  --ink:#1C2230;
+  --muted:#5B6373;
+  --rule:#D8DBE0;
+  --indigo:#2C4684;
+  --indigo-soft:#E4E9F4;
+  --kr:#2C4684;
+  --jp:#8A6A2E;
+  --jp-soft:#F1EADB;
+  --shu:#C0432C;
+  --font-display:"Gowun Batang","Noto Serif KR","Batang",serif;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --font-jp:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --font-data:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#12151B;--surface:#1A1E27;--ink:#E6E9EF;--muted:#9CA4B3;--rule:#2C323E;
+  --indigo:#97ACE4;--indigo-soft:#1E2742;--kr:#97ACE4;--jp:#D8B56E;--jp-soft:#2E2718;--shu:#E77B63;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#12151B;--surface:#1A1E27;--ink:#E6E9EF;--muted:#9CA4B3;--rule:#2C323E;
+  --indigo:#97ACE4;--indigo-soft:#1E2742;--kr:#97ACE4;--jp:#D8B56E;--jp-soft:#2E2718;--shu:#E77B63;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.8;word-break:keep-all;overflow-wrap:break-word;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+a{color:var(--indigo);text-underline-offset:3px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:3px}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.35;text-wrap:balance;margin:0}
+p{margin:0}
+.jp{font-family:var(--font-jp)}
+.mono{font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.wide{max-width:64rem;margin:0 auto}
+.text{max-width:40rem}
+.eyebrow{font-family:var(--font-data);font-size:.74rem;letter-spacing:.08em;color:var(--muted)}
+.gloss{font-size:.86rem;color:var(--muted)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--rule)}
+.bar .wide{display:flex;align-items:center;gap:1.1rem;padding-block:.65rem;overflow-x:auto;scrollbar-width:none}
+.bar .brand{font-family:var(--font-display);font-weight:700;color:var(--ink);text-decoration:none;margin-right:auto;white-space:nowrap}
+.bar a.c{font-family:var(--font-data);font-size:.78rem;color:var(--muted);text-decoration:none;white-space:nowrap}
+.bar a.c:hover{color:var(--indigo)}
+
+/* hero */
+.hero{padding-block:4.5rem 4rem}
+.hero h1{font-size:clamp(2.1rem,5.2vw,3.5rem);max-width:15em}
+.hero .lede{margin-top:1.3rem;font-size:1.1rem;max-width:36rem}
+.flip{margin-top:2.75rem;background:var(--surface);border:1px solid var(--rule);padding:1.75rem 1.5rem 1.5rem}
+.flip .row{display:grid;grid-template-columns:7rem minmax(0,1fr);gap:1rem;align-items:baseline}
+.flip .row + .row{margin-top:1.1rem;padding-top:1.1rem;border-top:1px dashed var(--rule)}
+.flip .who{font-size:.8rem;color:var(--muted)}
+.flip .ko{font-size:clamp(1.15rem,2.6vw,1.45rem);font-family:var(--font-display)}
+.jphl{display:flex;flex-wrap:wrap;align-items:flex-start;gap:0;font-family:var(--font-jp);font-weight:700;font-size:clamp(1.05rem,4.6vw,2rem);line-height:1.3}
+.jphl .p>span:first-child{white-space:nowrap}
+.jphl .p{display:flex;flex-direction:column;gap:.35rem}
+.jphl .t{font-family:var(--font-data);font-weight:400;font-size:.66rem;letter-spacing:.05em;color:var(--muted);border-top:1px solid var(--rule);padding-top:.3rem}
+.jphl .sp{width:1.5em}
+.jphl .sp i{display:block;height:1.3em;border:1.5px dashed var(--shu);background:color-mix(in srgb,var(--shu) 9%,transparent)}
+.jphl .sp .t{color:var(--shu);border-top-color:var(--shu);text-align:center}
+.flip .actions{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
+.btn{background:var(--indigo);color:var(--paper);border:0;padding:.6rem 1.1rem;font-size:.92rem;font-weight:500}
+.btn.ghost{background:transparent;color:var(--indigo);border:1px solid var(--indigo)}
+.btn:hover{filter:brightness(1.08)}
+.note-sm{font-size:.82rem;color:var(--muted)}
+
+/* origin */
+.origin{padding-block:3.5rem;border-top:1px solid var(--rule)}
+.origin-in{max-width:40rem;display:grid;gap:.9rem;border-left:2px solid var(--jp);padding-left:1.25rem}
+.origin h2{font-size:clamp(1.35rem,3vw,1.75rem)}
+.origin .src{font-size:.82rem;color:var(--muted)}
+
+/* chapters */
+.ch{padding-block:5rem;border-top:1px solid var(--rule)}
+.ch-head{display:grid;gap:.7rem}
+.ch-head .num{font-family:var(--font-data);font-size:.78rem;color:var(--indigo);letter-spacing:.06em}
+.ch-head h2{font-size:clamp(1.65rem,3.6vw,2.4rem);max-width:20em}
+.ch-head p{max-width:40rem}
+.play{margin-top:2.25rem;background:var(--surface);border:1px solid var(--rule);padding:1.6rem 1.5rem}
+.play .q{font-family:var(--font-display);font-size:1.2rem;font-weight:700}
+.answer{margin-top:1.75rem;display:grid;gap:1rem;max-width:40rem}
+details.labnote{margin-top:2rem;border-top:1px solid var(--rule);padding-top:1rem;max-width:40rem}
+details.labnote summary{cursor:pointer;font-family:var(--font-data);font-size:.8rem;color:var(--muted);list-style:none}
+details.labnote summary::-webkit-details-marker{display:none}
+details.labnote summary::before{content:"+ ";color:var(--indigo)}
+details.labnote[open] summary::before{content:"− "}
+details.labnote .in{margin-top:.8rem;font-size:.9rem;display:grid;gap:.55rem}
+details.labnote .src{font-size:.82rem;color:var(--muted)}
+
+/* ch1 examples */
+.ex{display:grid;gap:.75rem;margin-top:1.4rem}
+.ex button{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--rule);padding:.9rem 1rem}
+.ex button:hover{border-color:var(--indigo)}
+.ex .h{font-family:var(--font-jp);font-weight:700;font-size:1.3rem;line-height:1.5}
+.ex .kr-line{display:block;font-size:.9rem;color:var(--muted);margin-top:.15rem}
+.ex .kr-line .s{display:inline-block;width:.6em}
+.ex .h .k,.ex .kr-line .k{transition:background .25s}
+.ex .h .s{display:inline-block;width:1.2em;margin:0 .1em;vertical-align:middle;height:1.1em;border:1.5px dashed transparent;transition:border-color .25s,background .25s}
+.ex .h .c,.ex .kr-line .c{transition:background .25s}
+.ex button[aria-pressed="true"] .k{background:var(--indigo-soft)}
+.ex button[aria-pressed="true"] .s{border-color:var(--shu);background:color-mix(in srgb,var(--shu) 9%,transparent)}
+.ex button[aria-pressed="true"] .c{background:var(--jp-soft)}
+.ex .meta{display:block;margin-top:.35rem;font-size:.78rem;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem;font-size:.8rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:.8rem;height:.8rem;margin-right:.35rem;vertical-align:-1px}
+.legend .lk::before{background:var(--indigo-soft)}
+.legend .ls::before{border:1.5px dashed var(--shu)}
+.legend .lc::before{background:var(--jp-soft)}
+.big{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.75rem}
+.big div{background:var(--paper);padding:1.1rem 1.2rem}
+.big b{display:block;font-family:var(--font-data);font-weight:500;font-size:2rem;line-height:1.15;font-variant-numeric:tabular-nums}
+.big .kr b{color:var(--kr)} .big .jpn b{color:var(--jp)}
+.big span{font-size:.86rem;color:var(--muted)}
+
+/* ch2 guess */
+.guess{display:grid;gap:1rem;margin-top:1.2rem}
+.guess label{font-size:.92rem}
+.guess .slider{display:grid;grid-template-columns:minmax(0,1fr) 4.5rem;gap:1rem;align-items:center}
+input[type=range]{width:100%;accent-color:var(--indigo)}
+.guess output{font-family:var(--font-data);font-size:1.4rem;text-align:right}
+.dots-wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;margin-top:1.5rem}
+.dots-wrap h3{font-size:1rem;margin-bottom:.6rem;display:flex;justify-content:space-between;gap:.5rem}
+.dots-wrap h3 .mono{font-weight:400}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:15rem}
+.dots i{aspect-ratio:1;border-radius:50%;border:1px solid var(--rule);background:transparent;transition:background .35s}
+.dots.kr i.on{background:var(--kr);border-color:var(--kr)}
+.dots.jp i.on{background:var(--jp);border-color:var(--jp)}
+.verdict{font-family:var(--font-display);font-size:1.15rem}
+.marks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.mark{border-top:2px solid var(--ink);padding-top:.7rem;display:grid;gap:.3rem;align-content:start}
+.mark .sym{font-family:var(--font-data);font-size:1.6rem;line-height:1}
+.mark .who{font-size:.76rem;color:var(--muted)}
+.mark p{font-size:.88rem}
+
+/* ch3 endings */
+.stack{display:grid;gap:1.1rem;margin-top:1.4rem}
+.stack .lab{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.35rem}
+.sbar{display:flex;height:2.4rem;width:100%;overflow:hidden;border:1px solid var(--rule)}
+.sbar button{border:0;padding:0;height:100%;position:relative;min-width:0;font-family:var(--font-data);font-size:.72rem;color:var(--paper);overflow:hidden;white-space:nowrap}
+.sbar button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:-2px}
+.cats{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.1rem}
+.cats button{background:transparent;border:1px solid var(--rule);padding:.3rem .7rem;font-size:.82rem}
+.cats button[aria-pressed="true"]{border-color:var(--ink);background:var(--paper)}
+.cats button i{display:inline-block;width:.7rem;height:.7rem;margin-right:.35rem;vertical-align:-1px}
+.catinfo{margin-top:1.1rem;padding:1rem 1.1rem;background:var(--paper);border:1px solid var(--rule);display:grid;gap:.4rem}
+.catinfo h3{font-size:1.1rem}
+.catinfo .nums{font-family:var(--font-data);font-size:.85rem}
+
+/* ch4 leads */
+.leads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-top:1.4rem}
+.lead{background:var(--paper);border:1px solid var(--rule);padding:1.1rem 1.2rem;display:grid;gap:.6rem;align-content:start}
+.lead .who{font-size:.78rem;color:var(--muted)}
+.lead blockquote{margin:0;font-family:var(--font-display);font-size:1.12rem;line-height:1.6}
+.lead mark{background:transparent;padding:0 .1em;border-bottom:2px solid currentColor}
+.lead.jp mark{color:var(--jp)} .lead.kr mark{color:var(--kr)}
+.lead .type{font-family:var(--font-data);font-size:.78rem}
+.lead .pct{font-family:var(--font-data);font-size:1.8rem;line-height:1.1}
+.lead.jp .pct{color:var(--jp)} .lead.kr .pct{color:var(--kr)}
+
+.flipgrid{margin-top:1.4rem;background:var(--surface);border:1px solid var(--rule);padding:1.1rem 1.2rem;display:grid;gap:.7rem}
+.fg-row{display:grid;grid-template-columns:7.5rem minmax(0,1fr) minmax(0,1fr);gap:1rem;align-items:center;font-size:.88rem}
+.fg-head{font-size:.78rem;color:var(--muted)}
+.fg-row [role=cell]{display:flex;align-items:center;gap:.5rem;min-width:0}
+.trk{flex:1;min-width:0}
+.fgb{display:block;height:.75rem}
+.fg-row b{width:3.4rem;text-align:right}
+.fgb.jp{background:var(--jp)} .fgb.kr{background:var(--kr)}
+.fg-row b{font-weight:500;font-size:.82rem}
+[lang="ja"],.jp,.jphl,.opt .jt{word-break:normal;line-break:strict}
+
+/* ch5 lab */
+.tabs{display:flex;flex-wrap:wrap;gap:.5rem}
+.tabs button{background:transparent;border:1px solid var(--rule);padding:.4rem .85rem;font-size:.86rem}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.orig{margin-top:1.3rem;display:grid;gap:.2rem}
+.orig .who{font-size:.78rem;color:var(--muted)}
+.orig .ko{font-family:var(--font-display);font-size:1.3rem}
+.opts{display:grid;gap:.75rem;margin-top:1.3rem}
+.opt{display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;gap:.9rem;align-items:start;text-align:left;width:100%;background:var(--paper);border:1px solid var(--rule);padding:.9rem 1rem}
+.opt:hover:not([disabled]){border-color:var(--indigo)}
+.opt[disabled]{cursor:default}
+.opt .L{font-family:var(--font-data);font-size:1rem;width:2.2rem;height:2.2rem;display:grid;place-items:center;border:1px solid var(--rule)}
+.opt .jt{font-family:var(--font-jp);font-weight:700;font-size:1.15rem;line-height:1.5}
+.opt .jt .sp{display:inline-block;width:1em;height:1.1em;vertical-align:-.15em;border:1.5px dashed transparent;margin:0 .05em}
+.opt[disabled] .jt .sp{border-color:var(--shu);background:color-mix(in srgb,var(--shu) 9%,transparent)}
+.opt .mean{font-size:.84rem;color:var(--muted);margin-top:.2rem}
+.opt .why{font-size:.86rem;margin-top:.5rem}
+.opt .cnt{font-family:var(--font-data);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.opt .tag{display:inline-block;font-family:var(--font-data);font-size:.7rem;padding:.1rem .45rem;margin-bottom:.35rem;border:1px solid var(--rule)}
+.opt.model{border-color:var(--indigo);background:var(--indigo-soft)}
+.opt.model .tag{border-color:var(--indigo);color:var(--indigo)}
+.opt.picked .L{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.labmsg{margin-top:1rem;font-family:var(--font-display);font-size:1.1rem;min-height:1.6em}
+.score{overflow-x:auto;margin-top:1.75rem;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.86rem;background:var(--surface)}
+th,td{padding:.6rem .8rem;text-align:right;border-bottom:1px solid var(--rule);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+thead th{font-weight:500;font-size:.78rem;color:var(--muted);background:var(--paper)}
+td{font-family:var(--font-data)} td:first-child{font-family:var(--font-body)}
+tbody tr:last-child td{border-bottom:0}
+td.best{color:var(--indigo);font-weight:500}
+
+.tryown{margin-top:1.75rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:1.3rem 1.5rem;border:1px solid var(--indigo);background:var(--indigo-soft)}
+.tryown > div{flex:1 1 22rem;min-width:0;display:grid;gap:.3rem}
+.tryown .btn{text-decoration:none;white-space:nowrap}
+
+.embed{margin-top:1rem;border:1px solid var(--rule);background:var(--surface)}
+.embed iframe{display:block;width:100%;height:1100px;border:0}
+
+/* ch6 why */
+.why3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;margin-top:2rem}
+.why3 div{border-top:2px solid var(--ink);padding-top:.8rem;display:grid;gap:.45rem;align-content:start}
+.why3 h3{font-size:1.1rem}
+.why3 p{font-size:.92rem}
+
+/* basis */
+.basis{padding-block:4.5rem;border-top:1px solid var(--rule)}
+.basis h2{font-size:1.5rem}
+.plist{list-style:none;margin:1.5rem 0 0;padding:0;display:grid;gap:0;border-top:1px solid var(--rule)}
+.plist li{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:1rem;padding-block:.85rem;border-bottom:1px solid var(--rule)}
+.plist .ch-ref{font-family:var(--font-data);font-size:.76rem;color:var(--indigo);padding-top:.2rem}
+.plist .t{font-size:.93rem}
+.plist .m{font-size:.8rem;color:var(--muted);margin-top:.15rem}
+.plist .m a{font-family:var(--font-data);font-size:.74rem}
+.corp{margin-top:2rem;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;font-size:.88rem;color:var(--muted)}
+.corp h3{font-size:1rem;color:var(--ink);margin-bottom:.35rem}
+footer{padding-block:2.5rem 3rem;border-top:1px solid var(--rule);font-size:.85rem;color:var(--muted)}
+footer .wide{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 2rem}
+
+@media (max-width:760px){
+  .ch{padding-block:3.5rem}
+  .flip .row{grid-template-columns:minmax(0,1fr);gap:.3rem}
+  .dots-wrap,.leads,.why3,.marks,.corp{grid-template-columns:minmax(0,1fr)}
+  .play{padding:1.2rem 1rem}
+  .opt{grid-template-columns:2rem minmax(0,1fr)}
+  .opt .cnt{grid-column:2}
+  .plist li{grid-template-columns:minmax(0,1fr);gap:.2rem}
+  .fg-row{grid-template-columns:5.5rem minmax(0,1fr) minmax(0,1fr);gap:.75rem}
+  .fg-row [role=cell]{flex-direction:column;align-items:stretch;gap:.2rem}
+  .fg-row b{width:auto;text-align:left}
+  .trk{flex:none}
+}
+</style>
+
+</head>
+<body>
+<div class="bar">
+  <div class="wide">
+    <a class="brand" href="#top">제목의 문법</a>
+    <a class="c" href="#origin">출발점</a>
+    <a class="c" href="#ch1">1 공식</a>
+    <a class="c" href="#ch2">2 부호</a>
+    <a class="c" href="#ch3">3 끝맺음</a>
+    <a class="c" href="#ch4">4 첫 문장</a>
+    <a class="c" href="#ch5">5 번역 실험실</a>
+    <a class="c" href="#basis">연구 근거</a>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wide">
+    <p class="eyebrow">한국 사설과 일본 사설은 제목을 다르게 쓴다</p>
+    <h1>일본 신문 사설 제목에는 공식이 있다</h1>
+    <p class="lede">한국과 일본의 6개 일간지 사설 수천 편을 컴퓨터로 분석했다. 같은 사안을 다뤄도 두 나라 사설은 제목을 짓는 방식, 부호를 쓰는 방식, 첫 문장을 여는 방식이 다르다. 이 차이를 알면 번역도 달라진다.</p>
+
+    <div class="flip" aria-live="polite">
+      <div class="row">
+        <span class="who">한국 사설 원제목<br>한국일보 2025.2.27.</span>
+        <p class="ko">“10년간 새 산업이 없다”는 한은 총재의 뼈아픈 지적</p>
+      </div>
+      <div class="row" id="flipOut">
+        <span class="who" id="flipWho">그대로 기계번역</span>
+        <div id="flipBody">
+          <p class="jp" style="font-size:clamp(1.15rem,2.8vw,1.5rem);font-weight:700">“10年間新産業はない”韓銀総裁の痛烈な指摘</p>
+          <p class="gloss">22자. 누가 무슨 말을 했는지는 있지만, 사설이 무엇을 주장하는지는 없다.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="flipBtn" type="button">일본 사설 공식으로 바꾸기</button>
+        <span class="note-sm">예시 출처: 『日本學報』 147 사례 분석</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="origin" id="origin">
+  <div class="wide">
+    <div class="origin-in">
+      <p class="eyebrow">출발점</p>
+      <h2>요미우리 사설 3,843편</h2>
+      <p>이 연구는 요미우리 신문 사설 5년 반 치(2018.12–2024.7)를 컴퓨터로 분석하는 데서 시작했다. 사설 문장은 명사와 조사로 촘촘하게 짜여 있다. 명사 바로 뒤에 조사가 오는 연결이 약 19%, 명사끼리 이어지는 연결이 약 9%다. 문장 끝에서는 조건문을 이용한 의무 표현(「~なければならない」)과 「こと」를 이용한 단정이 되풀이된다.</p>
+      <p>되풀이되는 틀이 있다면 제목에도 틀이 있지 않을까. 이 질문에서 일본 3사, 다시 한국 3사로 범위를 넓혔다.</p>
+      <p class="src">근거: 『日本語敎育』 111, 2025 · 『일어일문학연구』 132, 2025</p>
+    </div>
+  </div>
+</section>
+
+<main>
+<!-- 1 -->
+<section class="ch" id="ch1">
+  <div class="wide">
+    <div class="ch-head">
+      <span class="num">1 · 공식</span>
+      <h2>일본 사설 제목은 ‘무엇에 대해’와 ‘그래서 어떻게’를 한 칸 띄워 나눈다</h2>
+      <p>일본 3대 일간지의 사설 제목은 앞에 주제를 가리키는 짧은 명사구(키워드), 한 칸 공백, 뒤에 사설의 주장(클레임)을 둔다. 독자는 앞부분만 보고 무슨 이야기인지, 뒷부분만 보고 어느 쪽으로 가는 글인지 안다.</p>
+    </div>
+    <div class="play">
+      <p class="q">아래 일본 사설 제목을 눌러 구조를 확인해 보세요</p>
+      <p class="gloss" style="margin-top:.3rem">아래 줄은 연구자 번역. 일본어 원문의 공백은 한 글자 크기의 빈칸이다.</p>
+      <div class="ex">
+        <button type="button" aria-pressed="false"><span class="h jp" lang="ja"><span class="k">能登地震半年</span><span class="s"></span><span class="c">いまだ見えない復興への道筋</span></span><span class="kr-line"><span class="k">노토 지진 반년</span><span class="s"></span><span class="c">아직 보이지 않는 재건의 길</span></span><span class="meta">요미우리 2024.7.1.</span></button>
+        <button type="button" aria-pressed="false"><span class="h jp" lang="ja"><span class="k">岸田新体制</span><span class="s"></span><span class="c">再選への思惑優先とは</span></span><span class="kr-line"><span class="k">기시다 새 체제</span><span class="s"></span><span class="c">재선 속셈 우선이라니</span></span><span class="meta">아사히 2023.9.14.</span></button>
+        <button type="button" aria-pressed="false"><span class="h jp" lang="ja"><span class="k">麻生氏発言と自民</span><span class="s"></span><span class="c">女性蔑視放置する無責任</span></span><span class="kr-line"><span class="k">아소 발언과 자민당</span><span class="s"></span><span class="c">여성 비하 방치하는 무책임</span></span><span class="meta">마이니치 2024.2.4.</span></button>
+      </div>
+      <div class="legend"><span class="lk">키워드 · 무엇에 대해</span><span class="ls">공백</span><span class="lc">클레임 · 그래서 어떻게</span></div>
+      <div class="big">
+        <div class="jpn"><b>100%</b><span>일본 · 제목 앞부분이 명사구 키워드인 사설 (2,940편 전부)</span></div>
+        <div class="kr"><b>22.4%</b><span>한국 · 제목 앞부분이 명사구 키워드인 사설</span></div>
+      </div>
+    </div>
+    <div class="answer">
+      <p>한국 사설은 앞부분부터 평가를 섞는다. “제 발등부터 찍은 ‘트럼프 관세’”처럼 주제를 가리키는 말 안에 이미 판단이 들어 있다. 일본은 주제는 담담하게, 판단은 뒤에 따로 둔다.</p>
+    </div>
+    <details class="labnote">
+      <summary>연구 노트</summary>
+      <div class="in">
+        <p>한일 각 3개 일간지 사설 5,880편(각 2,940편, 2019.8–2024.12)의 제목과 첫 문장을 분석했다. 일본은 요미우리·아사히·마이니치, 한국은 중앙일보·한겨레·한국일보로, 보수·진보·중도를 각각 맞췄다.</p>
+        <p>제목과 본문의 연결을 따로 분석한 연구(일본 3사 사설 4,116편)에서는 키워드의 글자·단어가 본문 도입부와 초반부에서 반복되고, 의미가 통하는 말은 중반부에 몰린다는 점을 확인했다. 제목은 본문으로 들어가는 문 역할을 한다.</p>
+        <p class="src">근거: 『인문언어』 28(1), 2026 · 『日本學』 66, 2025</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="ch" id="ch2">
+  <div class="wide">
+    <div class="ch-head">
+      <span class="num">2 · 부호</span>
+      <h2>한국 사설 제목은 부호로 말하고, 일본 사설 제목은 부호를 아낀다</h2>
+      <p>쉼표, 따옴표, 말줄임표. 한국 사설 제목에서 익숙한 부호들이다. 일본은 어떨까.</p>
+    </div>
+    <div class="play">
+      <p class="q">사설 제목 100개 중 문장부호가 하나라도 들어간 제목은 몇 개일까요?</p>
+      <div class="guess">
+        <label for="g-kr">한국 사설 제목 100개 중</label>
+        <div class="slider"><input type="range" id="g-kr" min="0" max="100" value="50"><output for="g-kr" id="o-kr">50</output></div>
+        <label for="g-jp">일본 사설 제목 100개 중</label>
+        <div class="slider"><input type="range" id="g-jp" min="0" max="100" value="50"><output for="g-jp" id="o-jp">50</output></div>
+        <div><button class="btn" type="button" id="g-go">정답 보기</button></div>
+      </div>
+      <div class="dots-wrap" id="g-res" hidden>
+        <div><h3><span>한국</span><span class="mono" id="r-kr"></span></h3><div class="dots kr" id="d-kr"></div></div>
+        <div><h3><span>일본</span><span class="mono" id="r-jp"></span></h3><div class="dots jp" id="d-jp"></div></div>
+      </div>
+      <p class="verdict" id="g-verdict" style="margin-top:1rem"></p>
+    </div>
+    <div class="answer">
+      <p>일본 사설 제목은 핵심 쟁점만 드러내고 평가의 방향은 본문에 맡긴다. 한국 사설 제목은 부호를 조합해 정보, 평가, 감정을 제목 안에서 모두 전달한다. 두 나라 모두 따옴표를 남의 말을 그대로 옮기는 데는 가장 적게 썼다. 사설 제목에서 따옴표는 인용보다 강조와 평가의 도구다.</p>
+      <div class="marks">
+        <div class="mark"><span class="sym">,</span><span class="who">한국 · 쉼표</span><p>97.74%가 ‘주제, 논평’을 가르는 데 쓰인다. 일본의 공백이 하는 일을 쉼표가 맡는다.</p></div>
+        <div class="mark"><span class="sym">‘ ’</span><span class="who">한국 · 작은따옴표</span><p>가장 많은 용도(30%)가 비판·풍자 표현 부각이다. 따옴표 자체가 평가 표지가 된다.</p></div>
+        <div class="mark"><span class="sym">「 」</span><span class="who">일본 · 홑낫표</span><p>80.28%가 비유 표현을 중립적으로 드러내는 데 쓰인다. 판단은 싣지 않는다.</p></div>
+      </div>
+    </div>
+    <details class="labnote">
+      <summary>연구 노트</summary>
+      <div class="in">
+        <p>한일 6개 일간지 사설 제목 8,232건(각 4,116건, 2022.2.28–2025.4.30)에서 부호의 빈도·유형·조합을 세고, 주요 부호의 기능을 사례로 분류했다. 부호가 들어간 제목은 한국 87.22%, 일본 11.90%다.</p>
+        <p class="src">근거: 『일본연구』 107, 2026</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="ch" id="ch3">
+  <div class="wide">
+    <div class="ch-head">
+      <span class="num">3 · 끝맺음</span>
+      <h2>일본 사설 제목의 절반 가까이는 무언가를 촉구하며 끝난다</h2>
+      <p>제목의 마지막 말은 사설이 독자에게 무엇을 하려는지 드러낸다. 촉구하는가, 상황을 전하는가, 규정하는가, 묻는가. 같은 8,232건을 다섯 가지로 나눠 비교했다.</p>
+    </div>
+    <div class="play">
+      <p class="q">막대를 누르거나 아래 유형을 골라 보세요</p>
+      <div class="stack">
+        <div><div class="lab"><span>일본</span><span class="mono">4,116건</span></div><div class="sbar" id="sb-jp"></div></div>
+        <div><div class="lab"><span>한국</span><span class="mono">4,116건</span></div><div class="sbar" id="sb-kr"></div></div>
+      </div>
+      <div class="cats" id="cats"></div>
+      <div class="catinfo" id="catinfo" aria-live="polite"></div>
+    </div>
+    <div class="answer">
+      <p>일본은 촉구하는 제목에 몰리고, 한국은 촉구·서술·규정·질문으로 고르게 퍼진다. 한국 사설은 질문형을 일본의 두 배로 쓰고, 일본은 방향만 제시하는 제목을 한국보다 훨씬 많이 쓴다.</p>
+      <p>더 흥미로운 점은 형태다. 촉구하는 제목에서 한국어는 ‘~해야’ 한 형태가 60% 가까이를 차지하고, 일본어는 「~を」와 「~せよ」류가 비슷한 비율로 함께 쓰인다. 질문하는 제목에서는 반대로 일본어가 「~か/~のか」 한 형태로 모이고, 한국어는 ‘~ㄴ가’, ‘~나’, ‘~라니’ 등으로 나뉘어 비판의 강도를 조절한다. 어느 언어가 더 단순한 것이 아니라, 기능마다 어느 쪽이 더 세밀한지가 바뀐다.</p>
+    </div>
+    <details class="labnote">
+      <summary>연구 노트</summary>
+      <div class="in">
+        <p>담화 기능(1층)과 형태·통사 실현(2층)을 나눠 분류하는 이중 분류 체계를 세웠다. 1층 분포의 한일 차이는 χ²(4)=454.54, p&lt;.001, Cramér’s V=0.235다. 신문사별 대응분석에서 나라 사이 차원이 전체 관성의 83.7%를 설명해, 같은 나라 안 신문사 차이보다 나라 사이 차이가 크다. 범주를 넷이나 셋으로 합쳐도 결과가 유지된다(V=0.182, 0.181).</p>
+        <p class="src">근거: 『日本語學硏究』 89, 2026</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="ch" id="ch4">
+  <div class="wide">
+    <div class="ch-head">
+      <span class="num">4 · 첫 문장</span>
+      <h2>일본 사설은 주로 ‘지금이 언제인가’로, 한국 사설은 주로 ‘누가 무엇을 했나’로 시작한다</h2>
+      <p>제목 바로 다음 첫 문장(리드)도 다르다. 두 나라 모두 첫 문장에서 상황을 전하지만, 무엇을 먼저 세우는지가 뒤집혀 있다.</p>
+    </div>
+    <div class="leads">
+      <div class="lead jp">
+        <span class="who">일본 · 요미우리 2024.3.13. (연구자 번역)</span>
+        <blockquote>도쿄전력 후쿠시마 제1원자력발전소 사고로부터 <mark>13년이 지났다.</mark></blockquote>
+        <span class="type">시간형 · 사건 이후 흐른 시간을 먼저 세운다</span>
+      </div>
+      <div class="lead kr">
+        <span class="who">한국 · 중앙일보 2019.8.16.</span>
+        <blockquote><mark>북한이</mark> 16일 또다시 단거리 발사체 2발을 <mark>발사했다.</mark></blockquote>
+        <span class="type">행동형 · 행위자와 행동을 먼저 세운다</span>
+      </div>
+    </div>
+    <div class="flipgrid" role="table" aria-label="상황을 전하는 첫 문장에 담긴 요소">
+      <div class="fg-row fg-head" role="row"><span role="columnheader"></span><span role="columnheader">일본</span><span role="columnheader">한국</span></div>
+      <div class="fg-row" role="row"><span role="rowheader">시간 요소 포함</span><span role="cell"><span class="trk"><i class="fgb jp" style="width:72.3%"></i></span><b class="mono">72.3%</b></span><span role="cell"><span class="trk"><i class="fgb kr" style="width:38.7%"></i></span><b class="mono">38.7%</b></span></div>
+      <div class="fg-row" role="row"><span role="rowheader">행동 요소 포함</span><span role="cell"><span class="trk"><i class="fgb jp" style="width:28.5%"></i></span><b class="mono">28.5%</b></span><span role="cell"><span class="trk"><i class="fgb kr" style="width:58.9%"></i></span><b class="mono">58.9%</b></span></div>
+      <p class="gloss">상황을 전하는 첫 문장(일본 2,233편, 한국 2,353편) 기준. 한 문장에 두 요소가 함께 들어 있으면 둘 다 셌다. 우선순위가 정확히 뒤집힌다.</p>
+    </div>
+    <div class="answer">
+      <p>일본 사설은 첫 문장에서 시간의 맥락을 깔고 바로 논평을 얹는다. 한국 사설은 첫 문장에서 사실을 전하는 데 집중하고 논평은 본문으로 미룬다. 제목에서 이미 평가를 드러낸 한국 사설이 첫 문장에서는 사실로 돌아가고, 제목에서 평가를 아낀 일본 사설은 첫 문장부터 논평을 시작한다.</p>
+    </div>
+    <details class="labnote">
+      <summary>연구 노트</summary>
+      <div class="in">
+        <p>상황 보고를 담은 첫 문장은 일본 76.0%, 한국 80.0%로 비슷하다. 차이는 그 안에 있다. 일본은 상황 보고와 논평을 한 문장에 묶는 복합형이 58.9%, 한국은 상황 보고만 하는 단독형이 54.0%다(복합형 대 단독형, χ²=1615.68, df=1, p&lt;.001, Cramér’s V=.524). 시간·행동·결과 하위 유형은 한 문장에 여럿이 겹칠 수 있어 합이 100%를 넘는다.</p>
+        <p class="src">근거: 『인문언어』 28(1), 2026</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="ch" id="ch5">
+  <div class="wide">
+    <div class="ch-head">
+      <span class="num">5 · 번역 실험실</span>
+      <h2>번역기가 아니라 원문을 고치면 번역이 달라진다</h2>
+      <p>한국 사설 제목을 그대로 번역기에 넣으면 길고 어색한 일본어가 나온다. 앞의 네 가지 발견을 하나의 ‘일본식 제목 공식’으로 정리해 AI에게 원문을 먼저 고쳐 쓰게 한 뒤 번역하면 어떨까. 세 가지 방법으로 만든 번역을 비교해 보자.</p>
+    </div>
+    <div class="play">
+      <div class="tabs" role="tablist" id="lab-tabs"></div>
+      <div class="orig"><span class="who" id="lab-who"></span><p class="ko" id="lab-ko"></p></div>
+      <p class="q" style="margin-top:1.4rem">어느 것이 일본 신문 사설 제목처럼 읽히나요?</p>
+      <div class="opts" id="lab-opts"></div>
+      <p class="labmsg" id="lab-msg" aria-live="polite"></p>
+    </div>
+    <div class="answer">
+      <p>세 방법의 결과를 같은 지표로 비교했다. 공식을 적용한 번역이 모든 지표에서 실제 일본 사설에 가장 가까웠다.</p>
+    </div>
+    <div class="tryown">
+      <div>
+        <p class="q">내 사설로 해 보기</p>
+        <p class="gloss">신문 사설 본문을 붙여 넣으면 같은 공식으로 한국어 제목을 다시 쓰고 일본어로 번역한다. 원제목을 함께 넣으면 그대로 번역한 결과와 나란히 볼 수 있다.</p>
+      </div>
+      <a class="btn" href="https://huggingface.co/spaces/HaemiLee/headline-grammar" target="_blank" rel="noopener">새 창에서 열기 ↗</a>
+    </div>
+    <div class="embed">
+      <iframe src="https://haemilee-headline-grammar.hf.space" title="내 사설로 해 보기 실험실" loading="lazy"></iframe>
+    </div>
+    <div class="score">
+      <table>
+        <thead><tr><th>지표</th><th>공식 적용</th><th>일반 지시</th><th>그대로 번역</th><th>실제 일본 사설</th></tr></thead>
+        <tbody>
+          <tr><td>키워드＋공백＋클레임 구조</td><td class="best">100%</td><td>87.3%</td><td>0%</td><td>100%</td></tr>
+          <tr><td>번역 후 평균 글자 수</td><td class="best">20.6자</td><td>26.8자</td><td>28.1자</td><td>19.59자</td></tr>
+          <tr><td>부호 사용률</td><td class="best">10%</td><td>31.7%</td><td>91.7%</td><td>11.9%</td></tr>
+          <tr><td>번역 안 된 한국어가 남은 경우</td><td class="best">0건</td><td>98건</td><td>163건</td><td>–</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details class="labnote">
+      <summary>연구 노트</summary>
+      <div class="in">
+        <p>구조 모델의 네 요소(이분 구조, 부호 제한, 끝맺음 분포, 제목–본문 결속)를 Claude API 프롬프트로 형식화해 한국 사설 본문에서 제목을 다시 쓰고, DeepL API로 번역했다. 비교 조건은 (a) 구조 모델 적용, (b) 일반 지시, (c) 원제목 직접 번역이다. 4,116건 전수에 자동 지표를 측정하고, 무작위 60건을 사례 분석했다. 기존 사전 편집 연구가 어휘·문법 수준에 머물렀다면, 이 연구는 목표 언어의 장르 관습을 사전 편집에 넣었다.</p>
+        <p>실험실의 일본어 아래 한국어 뜻풀이는 이해를 돕기 위한 번역이다.</p>
+        <p>‘내 사설로 해 보기’ 공개 실험실은 논문의 최종 프롬프트(v2)에 입력 검증, 약칭 처리, 출력 형식 규칙을 보완해 쓴다. 번역 후에는 번역기가 키워드 끝에 붙이는 연결어(「について」 등)를 지워 명사구 키워드를 유지한다.</p>
+        <p class="src">근거: 『日本學報』 147, 2026 · 한국연구재단 지원(NRF-2024S1A5B5A17035134)</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="ch" id="ch6">
+  <div class="wide">
+    <div class="ch-head">
+      <span class="num">6 · 그래서</span>
+      <h2>제목의 문법을 알면 무엇이 달라지나</h2>
+    </div>
+    <div class="why3">
+      <div><h3>번역</h3><p>독자는 본문보다 제목만 읽고 지나가는 일이 많다. 제목 번역은 정보 전달의 입구다. 단어를 옮기는 것만으로는 부족하고, 상대 언어의 제목 관습에 맞춰 다시 짜야 한다.</p></div>
+      <div><h3>AI</h3><p>번역 품질 문제의 원인은 번역 엔진의 성능보다 두 언어의 구조 차이에 있었다. 언어학이 찾아낸 규칙을 AI에게 알려 주면 같은 엔진에서도 결과가 달라진다.</p></div>
+      <div><h3>일본어 교육</h3><p>사설 제목은 짧고, 규칙이 분명하고, 매일 새로 나온다. 제목을 해부하고, 일본식으로 다시 쓰고, 번역기 결과를 비교하는 활동은 그대로 수업이 된다.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="basis" id="basis">
+  <div class="wide">
+    <p class="eyebrow">연구 근거</p>
+    <h2>이 사이트의 바탕이 된 논문</h2>
+    <p class="gloss" style="margin-top:.5rem">모두 이해미 단독 저작, 한국연구재단 등재 학술지 게재.</p>
+    <ul class="plist">
+      <li><span class="ch-ref">출발점</span><div><p class="t">일본 신문 사설의 언어적 특성에 관한 계량적 연구 — 요미우리 신문 사설 코퍼스의 형태·품사적 분석을 중심으로</p><p class="m">『日本語敎育』 111, 99–112, 2025 · <a href="https://doi.org/10.26591/jpedu.2025.111..008" target="_blank" rel="noopener">doi:10.26591/jpedu.2025.111..008</a></p></div></li>
+      <li><span class="ch-ref">출발점</span><div><p class="t">일본 신문 사설의 품사 연쇄와 TF-IDF 기반 분석을 통한 언어적 특성 분석 — 요미우리 신문 사설 코퍼스를 중심으로</p><p class="m">『일어일문학연구』 132, 89–108, 2025 · <a href="https://doi.org/10.17003/jllak.2025.132..89" target="_blank" rel="noopener">doi:10.17003/jllak.2025.132..89</a></p></div></li>
+      <li><span class="ch-ref">1장</span><div><p class="t">일본 신문 사설 헤드라인과 본문의 응집성 분석 — 키워드·클레임 구조와 응집성 메커니즘을 중심으로</p><p class="m">『日本學』 66, 33–52, 2025 · <a href="https://doi.org/10.21442/djs.2025.66.02" target="_blank" rel="noopener">doi:10.21442/djs.2025.66.02</a></p></div></li>
+      <li><span class="ch-ref">2장</span><div><p class="t">한일 신문 사설 헤드라인의 문장부호 사용 양상 비교 — 정량 분석과 기능 분석을 중심으로</p><p class="m">『일본연구』 107, 109–130, 2026 · <a href="https://doi.org/10.15733/jast.2026.107.109" target="_blank" rel="noopener">doi:10.15733/jast.2026.107.109</a></p></div></li>
+      <li><span class="ch-ref">1·4장</span><div><p class="t">한일 신문 사설 도입부의 정보 조직 방식 대조 — 헤드라인과 리드를 중심으로</p><p class="m">『인문언어』 28(1), 221–245, 2026 · <a href="https://doi.org/10.16945/inahsl.28.1.221" target="_blank" rel="noopener">doi:10.16945/inahsl.28.1.221</a></p></div></li>
+      <li><span class="ch-ref">3장</span><div><p class="t">한일 사설 헤드라인의 문말표현 대조 연구 — 담화 기능과 형태의 이중 층위 분석</p><p class="m">『日本語學硏究』 89, 123–143, 2026 · <a href="https://doi.org/10.14817/jlak.2026.89.123" target="_blank" rel="noopener">doi:10.14817/jlak.2026.89.123</a></p></div></li>
+      <li><span class="ch-ref">5장</span><div><p class="t">구조 모델 기반 사전 편집을 활용한 한국 사설 헤드라인의 기계번역 최적화 전략 — 일본식 헤드라인 구조 공식의 적용과 검증</p><p class="m">『日本學報』 147, 227–249, 2026 · <a href="https://doi.org/10.15532/kaja.2026.05.147.227" target="_blank" rel="noopener">doi:10.15532/kaja.2026.05.147.227</a></p></div></li>
+    </ul>
+    <div class="corp">
+      <div><h3>자료</h3><p>요미우리 사설 3,843편(2018.12–2024.7)에서 출발해 일본 3사, 한일 6사로 범위를 넓혔다. 신문사는 나라마다 보수·진보·중도를 하나씩 골라 특정 성향의 영향을 줄였다.</p></div>
+      <div><h3>원문 공개 범위</h3><p>사설 원문의 저작권은 각 언론사에 있다. 이 사이트에는 논문에 실린 짧은 예시와 통계만 싣는다.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wide">
+    <span>이해미 李海渼 · LEE Haemi · 경희대학교 · 일본어학</span>
+    <span>2026년 10월</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* hero flip */
+  var flipped=false, btn=document.getElementById('flipBtn'), body=document.getElementById('flipBody'), who=document.getElementById('flipWho');
+  var before=body.innerHTML;
+  var after='<div class="jphl" lang="ja"><div class="p"><span>新産業不在</span><span class="t">키워드</span></div><div class="p sp" aria-label="공백"><i></i><span class="t">공백</span></div><div class="p"><span>構造改革で突破せよ</span><span class="t">클레임 · ~하라</span></div></div><p class="gloss" style="margin-top:.6rem">14자. 신산업 부재, 구조개혁으로 돌파하라. 주제와 주장이 한눈에 갈린다.</p>';
+  btn.addEventListener('click',function(){
+    flipped=!flipped;
+    body.innerHTML=flipped?after:before;
+    who.innerHTML=flipped?'일본 사설 공식으로<br>고쳐 쓴 뒤 번역':'그대로 기계번역';
+    btn.textContent=flipped?'그대로 번역한 결과 보기':'일본 사설 공식으로 바꾸기';
+  });
+
+  /* ch1 toggles */
+  document.querySelectorAll('.ex button').forEach(function(b){
+    b.addEventListener('click',function(){b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');});
+  });
+
+  /* ch2 guess */
+  function bindOut(i,o){var a=document.getElementById(i),b=document.getElementById(o);a.addEventListener('input',function(){b.textContent=a.value;});}
+  bindOut('g-kr','o-kr');bindOut('g-jp','o-jp');
+  function dots(el,n){el.innerHTML='';for(var k=0;k<100;k++){var d=document.createElement('i');el.appendChild(d);}
+    var items=el.children;setTimeout(function(){for(var k=0;k<n;k++)items[k].classList.add('on');},30);}
+  document.getElementById('g-go').addEventListener('click',function(){
+    var gk=+document.getElementById('g-kr').value, gj=+document.getElementById('g-jp').value;
+    document.getElementById('g-res').hidden=false;
+    document.getElementById('r-kr').textContent='87.22% · 예상 '+gk;
+    document.getElementById('r-jp').textContent='11.90% · 예상 '+gj;
+    dots(document.getElementById('d-kr'),87);dots(document.getElementById('d-jp'),12);
+    var err=Math.abs(gk-87)+Math.abs(gj-12);
+    document.getElementById('g-verdict').textContent= err<=20?'거의 맞혔습니다. 한국 87개, 일본 12개입니다.':'한국은 100개 중 87개, 일본은 12개입니다. 차이가 일곱 배를 넘습니다.';
+  });
+
+  /* ch3 endings */
+  var cats=[
+    {id:'deon',n:'당위형',ex:'~해야 / ~を, ~せよ',d:'특정 행동을 하라고 촉구한다. 일본 사설 제목의 대표 유형이다.',jp:47.2,kr:37.9,c:'var(--indigo)'},
+    {id:'desc',n:'서술형',ex:'~다 / ~る, ~た',d:'사안이 어떻게 전개되고 있는지 상태를 전한다. 한국이 더 자주 쓴다.',jp:18.7,kr:24.6,c:'#5F8A8B'},
+    {id:'asrt',n:'단정형',ex:'명사로 끝맺기 / 명사, ~だ',d:'사안의 성격을 평가하는 말로 규정한다.',jp:18.4,kr:21.6,c:'#8A6A2E'},
+    {id:'intr',n:'의문형',ex:'~ㄴ가, ~나 / ~か, ~のか',d:'되묻는 형식으로 독자의 비판적 판단을 끌어낸다. 한국이 일본의 두 배다.',jp:7.7,kr:15.4,c:'#A2563F'},
+    {id:'dirc',n:'지향형',ex:'방향만 제시',d:'가야 할 방향이나 도달점을 제시하되, 누가 무엇을 하라고 특정하지 않는다. 한국에서는 거의 쓰이지 않는다.',jp:8.0,kr:0.6,c:'#6F6A8E'}
+  ];
+  var sel='deon';
+  function drawBar(el,key){
+    el.innerHTML='';
+    cats.forEach(function(c){
+      var b=document.createElement('button');b.type='button';b.style.width=c[key]+'%';b.style.background=c.c;
+      b.setAttribute('aria-label',c.n+' '+c[key]+'%');b.setAttribute('aria-pressed',c.id===sel?'true':'false');
+      b.textContent=c[key]>=6?c[key]+'%':'';
+      b.addEventListener('click',function(){pick(c.id);});
+      el.appendChild(b);
+    });
+  }
+  var catsEl=document.getElementById('cats');
+  cats.forEach(function(c){var b=document.createElement('button');b.type='button';b.dataset.id=c.id;b.innerHTML='<i style="background:'+c.c+'"></i>'+c.n;b.addEventListener('click',function(){pick(c.id);});catsEl.appendChild(b);});
+  function pick(id){
+    sel=id;var c=cats.filter(function(x){return x.id===id;})[0];
+    drawBar(document.getElementById('sb-jp'),'jp');drawBar(document.getElementById('sb-kr'),'kr');
+    catsEl.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false');});
+    document.getElementById('catinfo').innerHTML='<h3>'+c.n+' <span class="gloss" style="font-family:var(--font-body);font-weight:400">'+c.ex+'</span></h3><p>'+c.d+'</p><p class="nums">일본 '+c.jp.toFixed(1)+'% · 한국 '+c.kr.toFixed(1)+'%</p>';
+  }
+  pick('deon');
+
+  /* ch5 lab */
+  var cases=[
+    {tab:'경제',who:'한국일보 2025.2.27. · 한은 총재 발언에 관한 사설',ko:'“10년간 새 산업이 없다”는 한은 총재의 뼈아픈 지적',
+     order:['c','a','b'],
+     o:{a:{jt:'新産業不在<span class="sp"></span>構造改革で突破せよ',m:'신산업 부재, 구조개혁으로 돌파하라',n:14,why:'5자 키워드로 주제를 세우고, ‘~하라’로 사설의 주장을 바로 보인다.'},
+        b:{jt:'構造改革のゴールデンタイムを逃す韓国経済の危機',m:'구조개혁의 골든타임을 놓치는 한국 경제의 위기',n:23,why:'뜻은 맞지만 한 문장으로 이어져 있어, 주제와 주장을 독자가 스스로 나눠야 한다.'},
+        c:{jt:'“10年間新産業はない”韓銀総裁の痛烈な指摘',m:'‘10년간 신산업은 없다’ 한은 총재의 통렬한 지적',n:22,why:'누가 무슨 말을 했는지만 있고 사설의 주장이 없다. 한국식 큰따옴표도 그대로 남았다.'}}},
+    {tab:'노사',who:'중앙일보 2025.2.26. · 현대제철 노사 갈등에 관한 사설',ko:'현대제철 직장폐쇄 부른 강성 노조, 일자리 지킬 생각 좀 하라',
+     order:['b','c','a'],
+     o:{a:{jt:'現代製鉄の職場閉鎖<span class="sp"></span>危機的状況を認識せよ',m:'현대제철 직장폐쇄, 위기 상황을 인식하라',n:19,why:'사실을 가리키는 명사구로 주제를 세우고, 사설이 요구하는 바를 ‘~하라’로 분명히 한다.'},
+        b:{jt:'鉄鋼業界四面楚歌にも成果給を要求する労組の常識知らず',m:'철강업계 사면초가에도 성과급을 요구하는 노조의 몰상식',n:26,why:'비난은 있지만 무엇을 촉구하는지가 없다. 앞부분이 긴 수식절이라 주제가 철강업계인지 노조인지 바로 잡히지 않는다.'},
+        c:{jt:'現代製鉄の職場閉鎖を招いた強硬な労組、雇用を守ることを考えなさい',m:'현대제철 직장폐쇄를 부른 강경 노조, 고용 지킬 것을 생각하시오',n:32,why:'32자로 길고, ‘考えなさい(생각하시오)’는 일본 사설 제목에서 쓰지 않는 끝맺음이다.'}}},
+    {tab:'세금',who:'한국일보 2024.12.2. · 가상자산 과세 유예에 관한 사설',ko:'떼 쓰면 없던 일로… 조세 정의도, 신뢰도 내팽개치나',
+     order:['a','c','b'],
+     o:{a:{jt:'仮想資産課税猶予<span class="sp"></span>租税の信頼を崩した屈服',m:'가상자산 과세 유예, 조세 신뢰를 무너뜨린 굴복',n:19,why:'결정이 낳은 결과만 명사로 규정한다. 원인 판단은 본문에 맡겼다.'},
+        b:{jt:'仮想資産課税再延期<span class="sp"></span>税制の信頼を揺るがす「ポピュリズム政治」',m:'가상자산 과세 재연기, 세제 신뢰를 흔드는 「포퓰리즘 정치」',n:29,why:'구조는 갖췄지만 원인을 「포퓰리즘 정치」로 단정했다. 맥락을 모르는 일본 독자에게는 분석인지 정파적 비난인지 가려지지 않는다.'},
+        c:{jt:'群れを作れば無用の長物...税制の正義も、信頼性も捨て去るか',m:'무리를 지으면 무용지물… 세제의 정의도 신뢰성도 내다 버리나',n:28,why:'‘떼 쓰다’가 ‘무리를 짓다(群れを作る)’로 직역되어 뜻이 사라졌다. 무엇에 관한 사설인지조차 알 수 없다.'}}}
+  ];
+  var tag={a:'공식 적용',b:'‘일본식으로’ 일반 지시',c:'그대로 번역'};
+  var cur=0, done=false;
+  var tabsEl=document.getElementById('lab-tabs');
+  cases.forEach(function(cs,i){var b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.textContent=cs.tab;b.addEventListener('click',function(){load(i);});tabsEl.appendChild(b);});
+  function load(i){
+    cur=i;done=false;var cs=cases[i];
+    tabsEl.querySelectorAll('button').forEach(function(b,j){b.setAttribute('aria-selected',j===i?'true':'false');});
+    document.getElementById('lab-who').textContent=cs.who;
+    document.getElementById('lab-ko').textContent=cs.ko;
+    document.getElementById('lab-msg').textContent='';
+    var box=document.getElementById('lab-opts');box.innerHTML='';
+    cs.order.forEach(function(k,j){
+      var o=cs.o[k],L='ABC'[j];
+      var b=document.createElement('button');b.type='button';b.className='opt';b.dataset.k=k;
+      b.innerHTML='<span class="L">'+L+'</span><div><div class="tg" hidden><span class="tag">'+tag[k]+'</span></div><div class="jt" lang="ja">'+o.jt+'</div><div class="mean">'+o.m+'</div><div class="why" hidden>'+o.why+'</div></div><span class="cnt" hidden>'+o.n+'자</span>';
+      b.addEventListener('click',function(){reveal(k);});
+      box.appendChild(b);
+    });
+  }
+  function reveal(k){
+    if(done)return;done=true;
+    document.querySelectorAll('#lab-opts .opt').forEach(function(b){
+      b.disabled=true;
+      if(b.dataset.k===k)b.classList.add('picked');
+      if(b.dataset.k==='a')b.classList.add('model');
+      b.querySelector('.tg').hidden=false;b.querySelector('.why').hidden=false;b.querySelector('.cnt').hidden=false;
+    });
+    document.getElementById('lab-msg').textContent=k==='a'?'맞습니다. 공식을 적용해 고쳐 쓴 뒤 번역한 제목입니다.':'공식을 적용한 제목은 '+'ABC'[cases[cur].order.indexOf('a')]+'입니다. 키워드와 주장이 공백으로 나뉘어 있습니다.';
+  }
+  load(0);
+})();
+</script>
+
+</body>
+</html>
